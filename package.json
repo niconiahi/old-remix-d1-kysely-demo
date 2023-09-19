@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --manual -c \"npm run start\"",
+    "dev": "remix dev --manual -c \"npm run start:dev\"",
     "start": "wrangler pages dev --compatibility-date=2023-06-21 ./public",
+    "start:dev": "wrangler pages dev --compatibility-date=2023-06-21 ./public --d1=DB",
     "db:migrate": "wrangler d1 migrations apply remix-d1-kysely-demo",
+    "db:migrate:local": "wrangler d1 migrations apply remix-d1-kysely-demo --local",
     "typecheck": "tsc"
   },
   "dependencies": {
