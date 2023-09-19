@@ -4,8 +4,6 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { Kysely } from "kysely";
-import { D1Dialect } from "kysely-d1";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,27 +12,16 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-interface Env {
+type Env = {
   DB: D1Database;
-}
-
-interface User {
-  id: number;
-  name: string;
-  lastname: string;
-}
-
-interface Database {
-  users: User[];
-}
+};
 
 export async function loader({ context }: LoaderFunctionArgs) {
   const env = context.env as Env;
-  const db = new Kysely<Database>({
-    dialect: new D1Dialect({ database: env.DB }),
-  });
+  let { results } = await env.DB.prepare("SELECT * FROM users").all();
+  console.log("loader ~ results:", results);
 
-  return json({ users: db.selectFrom("users").selectAll().execute() });
+  return json({ users: results });
 }
 
 export default function Index() {
