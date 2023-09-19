@@ -4,6 +4,9 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
+import type { Generated } from "kysely";
+import { Kysely } from "kysely";
+import { D1Dialect } from "kysely-d1";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,25 +15,44 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-type Env = {
+interface Env {
   DB: D1Database;
-};
+}
+
+interface UserTable {
+  id: Generated<number>;
+  name: string;
+  lastname: string;
+}
+
+interface Database {
+  users: UserTable;
+}
 
 export async function loader({ context }: LoaderFunctionArgs) {
   const env = context.env as Env;
-  let { results } = await env.DB.prepare("SELECT * FROM users").all();
-  console.log("loader ~ results:", results);
+  const db = new Kysely<Database>({
+    dialect: new D1Dialect({ database: env.DB }),
+  });
 
-  return json({ users: results });
+  await db
+    .insertInto("users")
+    .values([{ lastname: "accetta", name: "nicolas" }])
+    .execute();
+
+  const users = await db.selectFrom("users").select("id").execute();
+  return json({ users });
 }
 
 export default function Index() {
   const { users } = useLoaderData<typeof loader>();
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+    <div>
       {users.map((user) => (
-        <span>{user.name}</span>
+        <span key={user.id} style={{ display: "block" }}>
+          {user.id}
+        </span>
       ))}
     </div>
   );
