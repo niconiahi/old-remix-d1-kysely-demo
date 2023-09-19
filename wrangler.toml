@@ -1,0 +1,4 @@
+[[ d1_databases ]]
+binding = "DB"
+database_name = "remix-d1-kysely-demo"
+database_id = "a6ebbd89-9ddf-4ec3-b212-267f13553460"
