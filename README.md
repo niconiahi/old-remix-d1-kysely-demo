@@ -1,22 +1,45 @@
-# Welcome to Remix!
+## Initial setup
 
-- [Remix Docs](https://remix.run/docs)
+1. Create your application and deploy it to Cloudflare pages
+2. Create a D1 database
+3. Bind the created D1 database to your deployed application's settings
+4. Add a `wrangler.toml` configuration file and add the D1 database information there
+```
+[[ d1_databases ]]
+binding = "DB"
+database_name = "remix-d1-kysely-demo"
+database_id = "a6ebbd89-9ddf-4ec3-b212-267f13553460"
+preview_database_id = "DB"
+```
+5. Deploy everything by commiting a change so the binding takes effect
 
-## Development
+## Applying migrations
 
-You will be utilizing Wrangler for local development to emulate the Cloudflare runtime. This is already wired up in your package.json as the `dev` script:
-
-```sh
-# start the remix dev server and wrangler
-npm run dev
+1. Add a `migrations` folder and add some SQL migration file to be applied
+2. Add a command that will apply the migrations defined in the `migrations` folder 
+```
+"db:migrate": "wrangler d1 migrations apply remix-d1-kysely-demo",
 ```
 
-Open up [http://127.0.0.1:8788](http://127.0.0.1:8788) and you should be ready to go!
+## Working locally
 
-## Deployment
+1. Add a command that will consume a local D1 database. This is done by adding the `--d1={DB_NAME}` flag to the command that starts the page's development 
+```
+"start:dev": "wrangler pages dev --compatibility-date=2023-06-21 ./public --d1=DB"
+```
 
-Cloudflare Pages are currently only deployable through their Git provider integrations.
+2. Add a command that will apply the migrations locally.
+```
+"db:migrate:local": "wrangler d1 migrations apply remix-d1-kysely-demo --local"
+```
 
-If you don't already have an account, then [create a Cloudflare account here](https://dash.cloudflare.com/sign-up/pages) and after verifying your email address with Cloudflare, go to your dashboard and follow the [Cloudflare Pages deployment guide](https://developers.cloudflare.com/pages/framework-guides/deploy-anything).
+## Links
 
-Configure the "Build command" should be set to `npm run build`, and the "Build output directory" should be set to `public`.
+- [D1 local development](https://developers.cloudflare.com/d1/learning/local-development/)
+- [D1 and Remix](https://developers.cloudflare.com/d1/examples/d1-and-remix/)
+- [D1 and Cloudflare pages](https://developers.cloudflare.com/d1/examples/d1-and-remix/)
+
+## Demos
+- [jacob-ebey/remix-dashboard-d1](https://github.com/jacob-ebey/remix-dashboard-d1)
+- [aidenwallis/kysely-d1](https://github.com/aidenwallis/kysely-d1)
+
