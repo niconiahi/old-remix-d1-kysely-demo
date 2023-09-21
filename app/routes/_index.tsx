@@ -4,9 +4,9 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import type { Generated } from "kysely";
 import { Kysely } from "kysely";
 import { D1Dialect } from "kysely-d1";
+import type { DB } from "kysely-codegen";
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,25 +19,15 @@ interface Env {
   DB: D1Database;
 }
 
-interface UserTable {
-  id: Generated<number>;
-  name: string;
-  lastname: string;
-}
-
-interface Database {
-  users: UserTable;
-}
-
 export async function loader({ context }: LoaderFunctionArgs) {
   const env = context.env as Env;
-  const db = new Kysely<Database>({
+  const db = new Kysely<DB>({
     dialect: new D1Dialect({ database: env.DB }),
   });
 
   await db
     .insertInto("users")
-    .values([{ lastname: "accetta", name: "nicolas" }])
+    .values([{ lastname: "accetta", name: "nicolas", username: "niconiahi" }])
     .execute();
 
   const users = await db.selectFrom("users").select("id").execute();
