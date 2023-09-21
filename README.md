@@ -1,3 +1,11 @@
+## Demo
+In this demo you can see how an user is created every time you refresh - [demo](https://remix-d1-kysely-demo.pages.dev/)
+
+## Files to pay attention
+1. [_index.tsx](/app/routes/_index.tsx)
+2. [wrangler.toml](/wrangler.toml)
+2. [.env](/.env)
+
 ## Initial setup
 
 1. Create your application and deploy it to Cloudflare pages
@@ -13,12 +21,12 @@ preview_database_id = "DB"
 ```
 5. Deploy everything by commiting a change so the binding takes effect
 
-## Applying migrations
+## Autogenerate types
 
-1. Add a `migrations` folder and add some SQL migration file to be applied
-2. Add a command that will apply the migrations defined in the `migrations` folder 
+1. Install [kysely-codegen](https://github.com/RobinBlomberg/kysely-codegen)
+2. Add a command that will instrospect the DB and will generate the final form of types, meaning it will be the result of the final migration being applied
 ```
-"db:migrate": "wrangler d1 migrations apply remix-d1-kysely-demo",
+"db:types": "npx kysely-codegen --out-file db/types.ts --dialect=sqlite"
 ```
 
 ## Working locally
@@ -33,6 +41,14 @@ preview_database_id = "DB"
 "db:migrate:local": "wrangler d1 migrations apply remix-d1-kysely-demo --local"
 ```
 
+## Applying migrations
+
+1. Add a `migrations` folder and add some SQL migration file to be applied
+2. Add a command that will apply the migrations defined in the `migrations` folder 
+```
+"db:migrate": "wrangler d1 migrations apply remix-d1-kysely-demo",
+```
+
 ## Links
 
 - [D1 local development](https://developers.cloudflare.com/d1/learning/local-development/)
@@ -42,4 +58,3 @@ preview_database_id = "DB"
 ## Demos
 - [jacob-ebey/remix-dashboard-d1](https://github.com/jacob-ebey/remix-dashboard-d1)
 - [aidenwallis/kysely-d1](https://github.com/aidenwallis/kysely-d1)
-
