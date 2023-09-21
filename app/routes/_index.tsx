@@ -4,9 +4,9 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
+import type { DB } from "db/types";
 import { Kysely } from "kysely";
 import { D1Dialect } from "kysely-d1";
-import type { DB } from "kysely-codegen";
 
 export const meta: MetaFunction = () => {
   return [
