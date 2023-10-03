@@ -1,5 +1,5 @@
 ### Expectations
-In this repo you'll learn how to setup a D1 database starting from Remix's @cloudflare/pages template and how to interact with it using Kysely query builder
+In this repo you'll learn how to setup a [D1 database](https://developers.cloudflare.com/d1/) starting from [Remix's @cloudflare/pages template](https://remix.run/docs/en/main/guides/templates#templates) and how to interact with it using [Kysely query builder](https://kysely.dev/)
 
 ### Demo
 In this demo you can see how an user is created every time you refresh - [demo](https://remix-d1-kysely-demo.pages.dev/)
