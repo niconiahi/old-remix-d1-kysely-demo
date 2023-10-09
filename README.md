@@ -36,7 +36,8 @@ preview_database_id = "DB"
 5. Deploy everything by commiting a change so the binding takes effect
 
 #### Add migrations
-1. Add a `/migrations` folder and add some SQL migration file to be applied. In this code we just create a very simple `users` table
+1. Add a `db` folder in which we'll save everything database-related
+2. Add a `migrations` folder inside of this `db` and add some SQL migration file to be applied. In this code we just create a very simple `users` table
 
 #### Applying migrations locally
 1. Add a command that will apply the migrations locally
@@ -46,7 +47,12 @@ preview_database_id = "DB"
 
 #### Autogenerate types
 1. Install [kysely-codegen](https://github.com/RobinBlomberg/kysely-codegen)
-2. Add a command that will instrospect the already created `/migrations` folder (with valid SQL in it) and it will output the types for your DB. Nullable fields will be typed with null, non-nullable won't, as expected
+2. Install `better-sqlite3` as a development dependency, as it's required by `kysely-codegen` as peer dependency
+3. Add a `DATABASE_URL` enviroment variable required by `kysely-codegen` which is going to point to your local D1 localbase. It should look something like this
+```
+DATABASE_URL="/Users/niconiahi/Documents/repos/remix-d1-kysely-demo/.wrangler/state/v3/d1/DB/db.sqlite"
+```
+3. Add a command that will instrospect the already created `/migrations` folder (with valid SQL in it) and it will output the types for your DB, applying all sequential migrations
 ```
 "db:types": "npx kysely-codegen --out-file db/types.ts --dialect=sqlite"
 ```
