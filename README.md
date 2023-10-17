@@ -23,7 +23,10 @@ In this demo you can see how an user is created every time you refresh - [demo](
 
 #### Setup database
 1. Create your application and deploy it to Cloudflare Pages 
-2. Create a D1 database through Cloudflare's dashboard
+2. Create a D1 database 
+```
+npx wrangler d1 create remix-d1-kysely-demo
+```
 3. Bind the created D1 database to your application via the application's settings
 4. Add a `wrangler.toml` configuration file and add the D1 database information there
 ```
@@ -36,8 +39,7 @@ preview_database_id = "DB"
 5. Deploy everything by commiting a change so the binding takes effect
 
 #### Add migrations
-1. Add a `db` folder in which we'll save everything database-related
-2. Add a `migrations` folder inside of this `db` and add some SQL migration file to be applied. In this code we just create a very simple `users` table
+1. Add a `migrations` folder and add some SQL migration file to be applied. In this code we just create a very simple `users` table
 
 #### Applying migrations locally
 1. Add a command that will apply the migrations locally
@@ -46,13 +48,14 @@ preview_database_id = "DB"
 ```
 
 #### Autogenerate types
-1. Install [kysely-codegen](https://github.com/RobinBlomberg/kysely-codegen)
-2. Install `better-sqlite3` as a development dependency, as it's required by `kysely-codegen` as peer dependency
-3. Add a `DATABASE_URL` enviroment variable required by `kysely-codegen` which is going to point to your local D1 localbase. It should look something like this
+1. Add a `db` folder in which we'll save everything database-related
+2. Install [kysely-codegen](https://github.com/RobinBlomberg/kysely-codegen)
+3. Install `better-sqlite3` as a development dependency, as it's required by `kysely-codegen` as peer dependency
+4. Add a `DATABASE_URL` enviroment variable required by `kysely-codegen` which is going to point to your local D1 localbase. It should look something like this
 ```
 DATABASE_URL="/Users/niconiahi/Documents/repos/remix-d1-kysely-demo/.wrangler/state/v3/d1/DB/db.sqlite"
 ```
-3. Add a command that will instrospect the already created `/migrations` folder (with valid SQL in it) and it will output the types for your DB, applying all sequential migrations
+5. Add a command that will instrospect the already created `/migrations` folder (with valid SQL in it) and it will output the types for your DB, applying all sequential migrations
 ```
 "db:types": "npx kysely-codegen --out-file db/types.ts --dialect=sqlite"
 ```
